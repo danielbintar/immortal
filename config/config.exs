@@ -9,6 +9,10 @@ use Mix.Config
 config :immortal,
   ecto_repos: [Immortal.Repo]
 
+config :immortal, Immortal.Auth.Guardian,
+  issuer: "immortal", # Name of your app/company/product
+  secret_key: "Ce2mIi1FZM/A9GcflZjf/xoYfEAl2tfPwSqjOoINub5BdeAeQF9G+0VFMfKPQLY3" # Replace this with mix guardian.gen.secret
+
 # Configures the endpoint
 config :immortal, ImmortalWeb.Endpoint,
   url: [host: "localhost"],
