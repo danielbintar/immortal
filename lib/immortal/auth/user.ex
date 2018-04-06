@@ -8,7 +8,7 @@ defmodule Immortal.Auth.User do
   schema "users" do
     field :password, :string
     field :username, :string
-    has_many :characters, Character
+    has_many :characters, Immortal.Characters.Character
 
     timestamps()
   end

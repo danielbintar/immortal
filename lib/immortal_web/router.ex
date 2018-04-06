@@ -23,7 +23,7 @@ defmodule ImmortalWeb.Router do
 
   # Maybe logged in scope
   scope "/", ImmortalWeb do
-    pipe_through [:browser, :auth, :ensure_auth]
+    pipe_through [:browser, :auth]
 
     get "/", PageController, :index
     resources "/characters", CharacterController
