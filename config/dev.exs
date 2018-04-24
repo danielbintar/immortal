@@ -52,7 +52,7 @@ config :phoenix, :stacktrace_depth, 20
 config :immortal, Immortal.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "123456",
+  password: "postgres",
   database: "immortal_dev",
   hostname: "localhost",
   pool_size: 10
