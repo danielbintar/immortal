@@ -28,9 +28,8 @@ defmodule ImmortalWeb.Router do
     get "/", PageController, :index
     resources "/characters", CharacterController
 
-    post "/", PageController, :login
-    post "/logout", PageController, :logout
-
+    post "/", UserSessionController, :login
+    get "/logout", UserSessionController, :logout
   end
 
   # Other scopes may use custom stacks.
