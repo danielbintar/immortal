@@ -2,7 +2,6 @@ defmodule ImmortalWeb.UserSessionController do
   use ImmortalWeb, :controller
 
   alias Immortal.Auth
-  alias Immortal.Auth.User
   alias Immortal.Auth.Guardian
 
   def login(conn, %{"user" => %{"username" => username, "password" => password}}) do

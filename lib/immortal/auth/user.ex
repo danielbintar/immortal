@@ -4,6 +4,7 @@ defmodule Immortal.Auth.User do
 
   alias Immortal.Auth.User
   alias Comeonin.Bcrypt
+  alias Immortal.Characters.Character
 
   schema "users" do
     field :password, :string

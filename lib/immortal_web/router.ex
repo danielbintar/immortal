@@ -30,6 +30,9 @@ defmodule ImmortalWeb.Router do
 
     post "/", UserSessionController, :login
     get "/logout", UserSessionController, :logout
+
+    get "/register", UserController, :new
+    post "/register", UserController, :create
   end
 
   # Other scopes may use custom stacks.
