@@ -26,6 +26,9 @@ defmodule ImmortalWeb.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
+    get "/game", PageController, :game
+    get "/play/:id", PageController, :play
+
     resources "/characters", CharacterController
 
     post "/", UserSessionController, :login

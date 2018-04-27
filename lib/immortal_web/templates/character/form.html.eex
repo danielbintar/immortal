@@ -7,20 +7,8 @@
 
   <div class="form-group">
     <%= label f, :name, class: "control-label" %>
-    <%= text_input f, :name, class: "form-control" %>
+    <%= text_input f, :name, class: "form-control"%>
     <%= error_tag f, :name %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :health, class: "control-label" %>
-    <%= number_input f, :health, class: "form-control" %>
-    <%= error_tag f, :health %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :attack, class: "control-label" %>
-    <%= number_input f, :attack, class: "form-control" %>
-    <%= error_tag f, :attack %>
   </div>
 
   <div class="form-group">

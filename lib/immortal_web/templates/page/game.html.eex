@@ -1,5 +1,5 @@
-<h2>Show Character</h2>
-
+In GAME
+<br><br>
 <ul>
 
   <li>
@@ -18,6 +18,5 @@
   </li>
 
 </ul>
-  
-<span><%= link "Enter", to: page_path(@conn, :play, @character.id) %></span>
-<span><%= link "Back", to: character_path(@conn, :index) %></span>
+<br><br>
+<span><%= link "Exit", to: character_path(@conn, :index), method: :get%></span>

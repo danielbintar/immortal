@@ -22,7 +22,7 @@
   <% end %>
 <% else %>
   <h1>Hello <%= @user.username%>!</h1>
-  <a href="#">Enter Game</a>
+  <span><%= link "Enter Game", to: character_path(@conn, :index), method: :get%></span>
   <br><br>
   <span><%= link "Logout", to: user_session_path(@conn, :logout), method: :get%></span>
 <% end %>

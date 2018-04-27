@@ -4,9 +4,9 @@ defmodule Immortal.Characters.Character do
 
 
   schema "characters" do
-    field :attack, :integer
-    field :health, :integer
-    field :name, :string
+    field :attack,  :integer, default: 5
+    field :health,  :integer, default: 20
+    field :name,    :string
     belongs_to :author, User, foreign_key: :user_id
 
     timestamps()
@@ -15,7 +15,7 @@ defmodule Immortal.Characters.Character do
   @doc false
   def changeset(character, attrs) do
     character
-    |> cast(attrs, [:name, :health, :attack])
-    |> validate_required([:name, :health, :attack])
+    |> cast(attrs, [:name, :health, :attack, :user_id])
+    |> validate_required([:name, :health, :attack, :user_id])
   end
 end
