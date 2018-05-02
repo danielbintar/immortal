@@ -26,10 +26,16 @@ defmodule ImmortalWeb.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
+    get "/game", PageController, :game
+    get "/play/:id", PageController, :play
+
     resources "/characters", CharacterController
 
     post "/", UserSessionController, :login
     get "/logout", UserSessionController, :logout
+
+    get "/register", UserController, :new
+    post "/register", UserController, :create
   end
 
   # Other scopes may use custom stacks.

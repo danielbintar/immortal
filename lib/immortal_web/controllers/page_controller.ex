@@ -4,6 +4,7 @@ defmodule ImmortalWeb.PageController do
   alias Immortal.Auth
   alias Immortal.Auth.User
   alias Immortal.Auth.Guardian
+  alias Immortal.Characters
 
   def index(conn, _params) do
     changeset = Auth.change_user(%User{})
@@ -17,5 +18,16 @@ defmodule ImmortalWeb.PageController do
     conn
       |> put_flash(:info, message)
       |> render("index.html", changeset: changeset, action: user_session_path(conn, :login), user: user)
+  end
+
+  def play(conn, %{"id" => id}) do
+    character = Characters.get_character!(String.to_integer(id))
+    conn = put_session(conn, :character_id, character.id)
+    conn |> redirect(to: page_path(conn, :game))
+  end
+
+  def game(conn, _params) do
+    character = Characters.get_character!(get_session(conn, :character_id))
+    conn |> render("game.html", character: character)
   end
 end

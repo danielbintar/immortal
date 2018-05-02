@@ -1,21 +1,24 @@
 defmodule ImmortalWeb.CharacterController do
   use ImmortalWeb, :controller
 
+  alias Immortal.Repo
   alias Immortal.Characters
   alias Immortal.Characters.Character
 
   def index(conn, _params) do
-    characters = Characters.list_characters()
-    render(conn, "index.html", characters: characters)
+    user = Guardian.Plug.current_resource(conn)
+    user = Repo.preload(user, :characters)
+    render(conn, "index.html", characters: user.characters)
   end
 
   def new(conn, _params) do
-    changeset = Characters.change_character(%Character{})
+    changeset = Characters.change_character(%Character{attack: 5, health: 20})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"character" => character_params}) do
-    case Characters.create_character(character_params) do
+    user = Guardian.Plug.current_resource(conn)
+    case Characters.create_character(Map.put(character_params, "user_id", user.id)) do
       {:ok, character} ->
         conn
         |> put_flash(:info, "Character created successfully.")
