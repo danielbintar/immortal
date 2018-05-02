@@ -2,7 +2,7 @@ defmodule ImmortalWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", ImmortalWeb.RoomChannel
+  channel "battle:*", ImmortalWeb.BatlleChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
