@@ -18,5 +18,6 @@ In GAME
   </li>
 
 </ul>
+<span><%= link "Battle", to: battle_path(@conn, :index), method: :get%></span>
 <br><br>
 <span><%= link "Exit", to: character_path(@conn, :index), method: :get%></span>

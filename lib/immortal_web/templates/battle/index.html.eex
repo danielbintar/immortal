@@ -1,0 +1,26 @@
+Battle
+<br><br>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Attack</th>
+      <th>Health</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for character <- @characters do %>
+        <tr>
+          <td><%= character.name %></td>
+          <td><%= character.attack %></td>
+          <td><%= character.health %></td>
+          <td class="text-right">
+            <span><%= link "Fight", to: battle_path(@conn, :p2p), class: "btn btn-default btn-xs" %></span>
+          </td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+<br><br>
+<span><%= link "Exit", to: character_path(@conn, :index), method: :get%></span>
