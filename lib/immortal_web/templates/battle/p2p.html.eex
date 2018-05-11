@@ -1,0 +1,44 @@
+Battle P2P
+<br><br>
+<table class="table">
+  <tr>
+    <td>
+      <ul>
+        <li>
+          <strong>Your Health:</strong>
+          <%= @character.health %>
+        </li>
+        <li>
+          <strong>Your Attack:</strong>
+          <%= @character.attack %>
+        </li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>
+          <strong>Enemy Health:</strong>
+          <%= @character.health %>
+        </li>
+        <li>
+          <strong>Enemy Attack:</strong>
+          <%= @character.attack %>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
+<ul>
+  <li>
+    <strong>Enemy Health:</strong>
+    <%= @character.health %>
+  </li>
+  <li>
+    <strong>Enemy Attack:</strong>
+    <%= @character.attack %>
+  </li>
+</ul>
+
+<span class="btn btn-default btn-xs"> Attack </span>

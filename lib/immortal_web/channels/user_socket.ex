@@ -4,6 +4,8 @@ defmodule ImmortalWeb.UserSocket do
   alias Immortal.Auth
 
   channel "chat:*", ImmortalWeb.ChatChannel
+  ## Channels
+  channel "battle:*", ImmortalWeb.BatlleChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

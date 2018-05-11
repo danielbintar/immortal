@@ -54,6 +54,12 @@ socket = new Socket("/socket", {params: {token: window.userToken}})
 if(window.userToken) {
 	socket.connect()
 	console.log("connect to socket")
+
+	let channel = socket.channel("battle:p2p", {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+
 }
 
 export default socket

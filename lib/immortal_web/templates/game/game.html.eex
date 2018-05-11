@@ -18,6 +18,7 @@ In GAME
   </li>
 
 </ul>
+<span><%= link "Battle", to: battle_path(@conn, :index), method: :get%></span>
 <br><br>
 <%= render "chat.html" %>
 
