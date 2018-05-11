@@ -1,6 +1,8 @@
 defmodule ImmortalWeb.Router do
   use ImmortalWeb, :router
 
+  require Logger
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -15,6 +17,7 @@ defmodule ImmortalWeb.Router do
 
   pipeline :auth do
     plug Immortal.Auth.Pipeline
+    plug :put_user_token
   end
 
   pipeline :ensure_auth do
@@ -26,7 +29,7 @@ defmodule ImmortalWeb.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
-    get "/game", PageController, :game
+    get "/game", GameController, :game
     get "/play/:id", PageController, :play
 
     resources "/characters", CharacterController
@@ -36,6 +39,18 @@ defmodule ImmortalWeb.Router do
 
     get "/register", UserController, :new
     post "/register", UserController, :create
+  end
+
+  defp put_user_token(conn, _) do
+    if current_user = Guardian.Plug.current_resource(conn) do
+      Logger.info "login"
+      token = Phoenix.Token.sign(conn, "user socket", current_user.id)
+      Logger.info token
+      assign(conn, :user_token, token)
+    else
+      Logger.info "not login"
+      conn
+    end
   end
 
   # Other scopes may use custom stacks.

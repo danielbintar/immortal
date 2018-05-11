@@ -23,11 +23,6 @@ defmodule ImmortalWeb.PageController do
   def play(conn, %{"id" => id}) do
     character = Characters.get_character!(String.to_integer(id))
     conn = put_session(conn, :character_id, character.id)
-    conn |> redirect(to: page_path(conn, :game))
-  end
-
-  def game(conn, _params) do
-    character = Characters.get_character!(get_session(conn, :character_id))
-    conn |> render("game.html", character: character)
+    conn |> redirect(to: game_path(conn, :game))
   end
 end

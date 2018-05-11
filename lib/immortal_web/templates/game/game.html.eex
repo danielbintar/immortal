@@ -19,4 +19,7 @@ In GAME
 
 </ul>
 <br><br>
+<%= render "chat.html" %>
+
+<br><br>
 <span><%= link "Exit", to: character_path(@conn, :index), method: :get%></span>

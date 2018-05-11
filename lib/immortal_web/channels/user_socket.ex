@@ -1,8 +1,9 @@
 defmodule ImmortalWeb.UserSocket do
   use Phoenix.Socket
 
-  ## Channels
-  # channel "room:*", ImmortalWeb.RoomChannel
+  alias Immortal.Auth
+
+  channel "chat:*", ImmortalWeb.ChatChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -20,7 +21,13 @@ defmodule ImmortalWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
-    {:ok, socket}
+    case Phoenix.Token.verify(socket, "user socket", _params["token"], max_age: 1209600) do
+      {:ok, user_id} ->
+        socket = assign(socket, :current_user, Auth.get_user!(user_id))
+        {:ok, socket}
+      {:error, reason} ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

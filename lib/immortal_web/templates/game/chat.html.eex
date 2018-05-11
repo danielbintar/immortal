@@ -1,0 +1,2 @@
+<div id="chat-messages"></div>
+<input id="chat-input" type="text"></input>
