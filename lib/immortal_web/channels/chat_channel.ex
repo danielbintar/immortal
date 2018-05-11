@@ -12,7 +12,7 @@ defmodule ImmortalWeb.ChatChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
-    message = "#{socket.assigns.current_user.username}: #{body}"
+    message = "#{socket.assigns.current_character.name}: #{body}"
     broadcast! socket, "new_msg", %{body: message}
     {:noreply, socket}
   end

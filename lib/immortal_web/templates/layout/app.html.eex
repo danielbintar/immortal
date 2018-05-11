@@ -32,8 +32,10 @@
     </div> <!-- /container -->
     <script>
       var socket;
+      <%= if assigns[:character] do %>
+        var character_id = "<%= @character.id %>";
+      <% end %>
       window.userToken = "<%= assigns[:user_token] %>";
-      console.log(window.userToken)
     </script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <%= render_existing @view_module, "scripts.html", assigns %>

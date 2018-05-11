@@ -5,7 +5,13 @@
 // and connect at the socket path in "lib/web/endpoint.ex":
 import {Socket} from "phoenix"
 
-socket = new Socket("/socket", {params: {token: window.userToken}})
+if (typeof character_id !== 'undefined') {
+  socket = new Socket("/socket", {params: {token: window.userToken, character_id: character_id}})
+}
+else {
+	socket = new Socket("/socket", {params: {token: window.userToken}})
+}
+
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -55,10 +61,10 @@ if(window.userToken) {
 	socket.connect()
 	console.log("connect to socket")
 
-	let channel = socket.channel("battle:p2p", {})
-  channel.join()
-    .receive("ok", resp => { console.log("Joined successfully", resp) })
-    .receive("error", resp => { console.log("Unable to join", resp) })
+	// let channel = socket.channel("battle:p2p", {})
+ //  channel.join()
+ //    .receive("ok", resp => { console.log("Joined successfully", resp) })
+ //    .receive("error", resp => { console.log("Unable to join", resp) })
 
 }
 

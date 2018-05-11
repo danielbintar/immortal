@@ -46,12 +46,9 @@ defmodule ImmortalWeb.Router do
 
   defp put_user_token(conn, _) do
     if current_user = Guardian.Plug.current_resource(conn) do
-      Logger.info "login"
       token = Phoenix.Token.sign(conn, "user socket", current_user.id)
-      Logger.info token
       assign(conn, :user_token, token)
     else
-      Logger.info "not login"
       conn
     end
   end

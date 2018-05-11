@@ -2,6 +2,7 @@ defmodule ImmortalWeb.UserSocket do
   use Phoenix.Socket
 
   alias Immortal.Auth
+  alias Immortal.Characters
 
   channel "chat:*", ImmortalWeb.ChatChannel
   ## Channels
@@ -26,6 +27,12 @@ defmodule ImmortalWeb.UserSocket do
     case Phoenix.Token.verify(socket, "user socket", _params["token"], max_age: 1209600) do
       {:ok, user_id} ->
         socket = assign(socket, :current_user, Auth.get_user!(user_id))
+        if _params["character_id"] do
+          character = Characters.get_character!(_params["character_id"])
+          if character.user_id == user_id do
+            socket = assign(socket, :current_character, character)
+          end
+        end
         {:ok, socket}
       {:error, reason} ->
         :error
