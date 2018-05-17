@@ -15,6 +15,7 @@ export var Chat = { run: function() {
     let messageItem = document.createElement("li")
     messageItem.innerText = `${payload.body}`
     messagesContainer.appendChild(messageItem)
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   })
 
   channel.join()

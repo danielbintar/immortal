@@ -200,8 +200,8 @@ export let Game = { run: function() {
         tempTile.x + 1 + Math.ceil((this.screen.width / 2) / tile.width),
         tempTile.y + 1 + Math.ceil((this.screen.height / 2) / tile.height)
       );
-      if(this.endTile.x > map.width)this.endTile.x = map.width - 1;
-      if(this.endTile.y > map.height)this.endTile.y = map.height - 1;
+      if(this.endTile.x > map.width)this.endTile.x = map.width;
+      if(this.endTile.y > map.height)this.endTile.y = map.height;
     }
   }
 
