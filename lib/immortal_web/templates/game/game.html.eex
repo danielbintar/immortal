@@ -1,5 +1,7 @@
-In GAME
+<canvas id="game" width="400" height="400"></canvas>
+
 <br><br>
+
 <ul>
 
   <li>
@@ -20,6 +22,7 @@ In GAME
 </ul>
 <span><%= link "Battle", to: battle_path(@conn, :index), method: :get%></span>
 <br><br>
+
 <%= render "chat.html" %>
 
 <br><br>

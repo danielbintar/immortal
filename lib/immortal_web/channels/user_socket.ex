@@ -23,12 +23,12 @@ defmodule ImmortalWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    case Phoenix.Token.verify(socket, "user socket", _params["token"], max_age: 1209600) do
+  def connect(params, socket) do
+    case Phoenix.Token.verify(socket, "user socket", params["token"], max_age: 1209600) do
       {:ok, user_id} ->
         socket = assign(socket, :current_user, Auth.get_user!(user_id))
-        if _params["character_id"] do
-          character = Characters.get_character!(_params["character_id"])
+        if params["character_id"] do
+          character = Characters.get_character!(params["character_id"])
           if character.user_id == user_id do
             socket = assign(socket, :current_character, character)
           end
