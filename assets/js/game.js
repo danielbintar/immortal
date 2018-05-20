@@ -30,19 +30,10 @@ export let Game = { run: function() {
     this.sprites = sprites;
   }
 
-  function Character() {
-    this.tileFrom = new Coordinate(1, 1);
-    this.tileTo = new Coordinate(1, 1);
+  function Character(x, y) {
+    this.tileFrom = new Coordinate(x, y);
+    this.tileTo = new Coordinate(y, y);
     this.dimension = new Dimension(30, 30);
-
-    if(character_position_x != "") {
-      this.tileFrom.x = character_position_x;
-      this.tileTo.x = character_position_x;
-    }
-    if(character_position_y != "") {
-      this.tileFrom.y = character_position_y;
-      this.tileTo.y = character_position_y;
-    }
 
     this.position = new Coordinate(
       ((tile.width * this.tileTo.x) + ((tile.width - this.dimension.width) / 2)),
@@ -85,10 +76,10 @@ export let Game = { run: function() {
 
   Character.prototype.moving = function() {
     let current_direction = this.direction;
-    if (player.tileTo.x > player.tileFrom.x)current_direction = directions.right;
-    else if (player.tileTo.x < player.tileFrom.x)current_direction = directions.left;
-    else if (player.tileTo.y > player.tileFrom.y)current_direction = directions.down;
-    else if (player.tileTo.y < player.tileFrom.y)current_direction = directions.up;
+    if (this.tileTo.x > this.tileFrom.x)current_direction = directions.right;
+    else if (this.tileTo.x < this.tileFrom.x)current_direction = directions.left;
+    else if (this.tileTo.y > this.tileFrom.y)current_direction = directions.down;
+    else if (this.tileTo.y < this.tileFrom.y)current_direction = directions.up;
 
     if(this.direction == current_direction) {
       this.direction_counter++;
@@ -173,7 +164,10 @@ export let Game = { run: function() {
     40 : false,
   };
 
-  let player = new Character();
+  let players = [new Character(character.position_x, character.position_y)];
+  let playerIndices = {};
+  playerIndices[character.id.toString()] = 0;
+  let allowedMoving = true;
 
   let gameMap = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -297,7 +291,7 @@ export let Game = { run: function() {
     ctx.font = "bold 10pt sans-serif";
 
     window.addEventListener("keydown", function(e) {
-      if(e.keyCode >= 37 && e.keyCode <= 40 && player.idle) {
+      if(e.keyCode >= 37 && e.keyCode <= 40 && players[0].idle) {
         keysDown[e.keyCode] = true;
       }
     });
@@ -356,24 +350,31 @@ export let Game = { run: function() {
     }
     else frameCount++;
 
-    if(!player.processMovement(currentFrameTime)) {
-      if(keysDown[38] && isValidPosition(player.tileTo.x, player.tileTo.y - 1)) {
+    if(!players[0].processMovement(currentFrameTime) && allowedMoving) {
+      if(keysDown[38] && isValidPosition(players[0].tileTo.x, players[0].tileTo.y - 1)) {
         channel.push("move", {direction: "up"})
+        allowedMoving = false;
       }
-      if(keysDown[40] && isValidPosition(player.tileTo.x, player.tileTo.y + 1)) {
+      if(keysDown[40] && isValidPosition(players[0].tileTo.x, players[0].tileTo.y + 1)) {
         channel.push("move", {direction: "down"})
+        allowedMoving = false;
       }
-      if(keysDown[37] && isValidPosition(player.tileTo.x - 1, player.tileTo.y)) {
+      if(keysDown[37] && isValidPosition(players[0].tileTo.x - 1, players[0].tileTo.y)) {
         channel.push("move", {direction: "left"})
+        allowedMoving = false;
       }
-      if(keysDown[39] && isValidPosition(player.tileTo.x + 1, player.tileTo.y)) {
+      if(keysDown[39] && isValidPosition(players[0].tileTo.x + 1, players[0].tileTo.y)) {
         channel.push("move", {direction: "right"})
+        allowedMoving = false;
       }
+    }
+    for (let i = 0; i < players.length; i++) {
+      players[i].processMovement(currentFrameTime);
     }
 
     viewPort.update(
-      player.position.x + (player.dimension.width / 2),
-      player.position.y + (player.dimension.height / 2)
+      players[0].position.x + (players[0].dimension.width / 2),
+      players[0].position.y + (players[0].dimension.height / 2)
     );
 
     ctx.fillStyle = "#000000";
@@ -391,15 +392,17 @@ export let Game = { run: function() {
       }
     }
 
-    let sprite = player.sprites[player.direction];
-    ctx.drawImage(
-      playerset,
-      sprite[player.direction_counter].x, sprite[player.direction_counter].y,
-      sprite[player.direction_counter].w, sprite[player.direction_counter].h,
-      viewPort.offset.x + player.position.x,
-      viewPort.offset.y + player.position.y,
-      player.dimension.width, player.dimension.height
-    );
+    players.forEach(function(player) {
+      let sprite = player.sprites[player.direction];
+      ctx.drawImage(
+        playerset,
+        sprite[player.direction_counter].x, sprite[player.direction_counter].y,
+        sprite[player.direction_counter].w, sprite[player.direction_counter].h,
+        viewPort.offset.x + player.position.x,
+        viewPort.offset.y + player.position.y,
+        player.dimension.width, player.dimension.height
+      );
+    })
 
     ctx.fillStyle = "#ff0000";
     ctx.fillText("FPS: " + frameLastSecond, 10, 20);
@@ -411,11 +414,22 @@ export let Game = { run: function() {
   let channel = socket.channel("map:all")
 
   channel.on("player_position", payload => {
+    console.log("masuk")
+    let movingPlayer;
+    if(playerIndices[payload.id.toString()] == undefined) {
+      movingPlayer = new Character(payload.x, payload.y);
+      players.push(movingPlayer);
+      playerIndices[payload.id.toString()] = players.length - 1;
+    } else {
+      movingPlayer = players[playerIndices[payload.id.toString()]];
+    }
+    
     let currentFrameTime = Date.now();
-    player.tileTo.x = payload.x;
-    player.tileTo.y = payload.y;
-    player.timeMoved = currentFrameTime;
-    player.moving();
+    movingPlayer.tileTo.x = payload.x;
+    movingPlayer.tileTo.y = payload.y;
+    movingPlayer.timeMoved = currentFrameTime;
+    movingPlayer.moving();
+    allowedMoving = true;
   })
 
   channel.join()

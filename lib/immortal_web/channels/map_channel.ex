@@ -1,6 +1,8 @@
 defmodule ImmortalWeb.MapChannel do
   use Phoenix.Channel
 
+  alias Immortal.Characters
+
   def join("map:all", _params, socket) do
     {:ok, socket}
   end
@@ -17,9 +19,12 @@ defmodule ImmortalWeb.MapChannel do
     	"right" ->
     		character |> Map.update(:position_x, 1, &(&1 + 1))
     end
+    x = character.position_x
+    y = character.position_y
     socket = assign(socket, :current_character, character)
+    Characters.update_character(character, %{"position_x" => x, "position_y" =>  y})
 
-    broadcast! socket, "player_position", %{x: character.position_x, y: character.position_y}
+    broadcast! socket, "player_position", %{id: character.id, x: x, y: y}
     {:noreply, socket}
   end
 end

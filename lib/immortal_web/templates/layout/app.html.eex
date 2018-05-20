@@ -25,9 +25,7 @@
     <script>
       var socket;
       <%= if assigns[:character] do %>
-        var character_position_x = "<%= @character.position_x %>";
-        var character_position_y = "<%= @character.position_y %>";
-        var character_id = "<%= @character.id %>";
+        var character = <%= raw Poison.encode!(Map.take(@character, [:id, :attack, :health, :name, :position_x, :position_y])) %>;
       <% end %>
       window.userToken = "<%= assigns[:user_token] %>";
     </script>
