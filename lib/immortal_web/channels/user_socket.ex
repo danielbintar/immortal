@@ -5,6 +5,7 @@ defmodule ImmortalWeb.UserSocket do
   alias Immortal.Characters
 
   channel "chat:*", ImmortalWeb.ChatChannel
+  channel "map:*", ImmortalWeb.MapChannel
   ## Channels
   channel "battle:*", ImmortalWeb.BatlleChannel
 
