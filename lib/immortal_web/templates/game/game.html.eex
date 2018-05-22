@@ -1,26 +1,8 @@
-In GAME
-<br><br>
-<ul>
+<div style="height: 600px; position: relative; width: 1100px">
+  <canvas id="game" height="600" width="1100" style="height: 100%; width: 100%;"></canvas>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @character.name %>
-  </li>
+  <div style="bottom: 0px; left: 0px; position: absolute; width: 100%">
+    <%= render "chat.html" %>
+  </div>
 
-  <li>
-    <strong>Health:</strong>
-    <%= @character.health %>
-  </li>
-
-  <li>
-    <strong>Attack:</strong>
-    <%= @character.attack %>
-  </li>
-
-</ul>
-<span><%= link "Battle", to: battle_path(@conn, :index), method: :get%></span>
-<br><br>
-<%= render "chat.html" %>
-
-<br><br>
-<span><%= link "Exit", to: character_path(@conn, :index), method: :get%></span>
+</div>

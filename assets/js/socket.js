@@ -5,8 +5,8 @@
 // and connect at the socket path in "lib/web/endpoint.ex":
 import {Socket} from "phoenix"
 
-if (typeof character_id !== 'undefined') {
-  socket = new Socket("/socket", {params: {token: window.userToken, character_id: character_id}})
+if (typeof character !== 'undefined') {
+  socket = new Socket("/socket", {params: {token: window.userToken, character_id: character.id}})
 }
 else {
 	socket = new Socket("/socket", {params: {token: window.userToken}})

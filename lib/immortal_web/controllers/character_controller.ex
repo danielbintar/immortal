@@ -5,6 +5,8 @@ defmodule ImmortalWeb.CharacterController do
   alias Immortal.Characters
   alias Immortal.Characters.Character
 
+  require Logger
+
   def index(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
     user = Repo.preload(user, :characters)
@@ -12,13 +14,15 @@ defmodule ImmortalWeb.CharacterController do
   end
 
   def new(conn, _params) do
-    changeset = Characters.change_character(%Character{attack: 5, health: 20})
+    changeset = Characters.change_character(%Character{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"character" => character_params}) do
     user = Guardian.Plug.current_resource(conn)
-    case Characters.create_character(Map.put(character_params, "user_id", user.id)) do
+    default = %{"attack" => 5, "health" => 20, "position_x" => 5, "position_y" => 5, "user_id" => user.id}
+    character_params = Map.merge(character_params, default)
+    case Characters.create_character(character_params) do
       {:ok, character} ->
         conn
         |> put_flash(:info, "Character created successfully.")

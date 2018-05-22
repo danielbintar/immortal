@@ -1,2 +1,18 @@
-<div id="chat-messages"></div>
-<input id="chat-input" type="text"></input>
+<div id="chat-box" style="
+  background-color: white;
+  overflow:   none;
+  position:   relative;
+  width: 170px;
+  height: 100px;
+  border: 1px solid;
+">
+  <div id=chat-messages class="list-unstyled clearfix" style="
+    overflow:   auto;
+    position:   absolute;
+    bottom:     0;
+    max-height: 100px;
+    width: 170px;
+  ">
+  </div>
+</div>
+<input id="chat-input" type="text" style="width: 170px"></input>
