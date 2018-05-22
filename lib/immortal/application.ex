@@ -16,6 +16,9 @@ defmodule Immortal.Application do
       # worker(Immortal.Worker, [arg1, arg2, arg3]),
     ]
 
+    :ets.new(:battle_room, [:named_table, :public])
+    :ets.insert(:battle_room, {"counter", 0})
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Immortal.Supervisor]

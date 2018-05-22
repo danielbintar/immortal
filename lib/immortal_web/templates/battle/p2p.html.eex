@@ -1,44 +1,37 @@
 Battle P2P
 <br><br>
+Room ID: <span id="battle-room"><%= @room %></span>
 <table class="table">
   <tr>
     <td>
       <ul>
+        <li><strong><%= @character.name %></strong></li>
         <li>
-          <strong>Your Health:</strong>
-          <%= @character.health %>
+          <strong>Health:</strong>
+          <span id = "battle-player-health"><%= @character.health %></span>
         </li>
         <li>
-          <strong>Your Attack:</strong>
-          <%= @character.attack %>
+          <strong>Attack:</strong>
+          <span id = "battle-player-attack"><%= @character.attack %><span>
         </li>
       </ul>
     </td>
     <td>
       <ul>
+        <li><strong><%= @enemy.name %></strong></li>
         <li>
-          <strong>Enemy Health:</strong>
-          <%= @character.health %>
+          <strong>Health:</strong>
+          <span id = "battle-enemy-health"><%= @enemy.health %></span>
         </li>
         <li>
-          <strong>Enemy Attack:</strong>
-          <%= @character.attack %>
+          <strong>Attack:</strong>
+          <span id = "battle-enemy-attack"><%= @enemy.attack %></span>
         </li>
       </ul>
     </td>
   </tr>
 </table>
 
-
-<ul>
-  <li>
-    <strong>Enemy Health:</strong>
-    <%= @character.health %>
-  </li>
-  <li>
-    <strong>Enemy Attack:</strong>
-    <%= @character.attack %>
-  </li>
-</ul>
-
-<span class="btn btn-default btn-xs"> Attack </span>
+<span id="battle-attack" class="btn btn-default btn-xs">Attack</span>
+<br>
+<ul id="battle-messages"></ul>

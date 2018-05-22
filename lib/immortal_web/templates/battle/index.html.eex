@@ -16,7 +16,7 @@ Battle
           <td><%= character.attack %></td>
           <td><%= character.health %></td>
           <td class="text-right">
-            <span><%= link "Fight", to: battle_path(@conn, :p2p), class: "btn btn-default btn-xs" %></span>
+            <span><%= link "Fight", to: battle_path(@conn, :p2p, character.id), class: "btn btn-default btn-xs" %></span>
           </td>
         </tr>
     <% end %>

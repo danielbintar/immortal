@@ -6,7 +6,7 @@ defmodule ImmortalWeb.UserSocket do
 
   channel "chat:*", ImmortalWeb.ChatChannel
   ## Channels
-  channel "battle:*", ImmortalWeb.BatlleChannel
+  channel "battle:*", ImmortalWeb.BattleChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
