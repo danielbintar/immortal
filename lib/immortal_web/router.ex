@@ -33,7 +33,7 @@ defmodule ImmortalWeb.Router do
     get "/play/:id", PageController, :play
 
     get "/battle/index", BattleController, :index
-    get "/battle/p2p/:id", BattleController, :p2p
+    get "/battle/p2p/:room_id", BattleController, :p2p
 
     resources "/characters", CharacterController
 
