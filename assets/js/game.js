@@ -32,7 +32,7 @@ export let Game = { run: function() {
 
   function Character(x, y) {
     this.tileFrom = new Coordinate(x, y);
-    this.tileTo = new Coordinate(y, y);
+    this.tileTo = new Coordinate(x, y);
     this.dimension = new Dimension(30, 30);
 
     this.position = new Coordinate(
@@ -164,8 +164,14 @@ export let Game = { run: function() {
     40 : false,
   };
 
-  let players = [new Character(character.position_x, character.position_y)];
   let playerIndices = {};
+
+  let players = [new Character(character.position_x, character.position_y)];
+  characters.forEach(function(p) {
+    players.push(new Character(p.position_x, p.position_y));
+    playerIndices[p.id.toString()] = players.length - 1;
+  });
+
   playerIndices[character.id.toString()] = 0;
   let allowedMoving = true;
 
@@ -352,20 +358,20 @@ export let Game = { run: function() {
 
     if(!players[0].processMovement(currentFrameTime) && allowedMoving) {
       if(keysDown[38] && isValidPosition(players[0].tileTo.x, players[0].tileTo.y - 1)) {
-        channel.push("move", {direction: "up"})
         allowedMoving = false;
+        channel.push("move", {direction: "up"})
       }
       if(keysDown[40] && isValidPosition(players[0].tileTo.x, players[0].tileTo.y + 1)) {
-        channel.push("move", {direction: "down"})
         allowedMoving = false;
+        channel.push("move", {direction: "down"})
       }
       if(keysDown[37] && isValidPosition(players[0].tileTo.x - 1, players[0].tileTo.y)) {
-        channel.push("move", {direction: "left"})
         allowedMoving = false;
+        channel.push("move", {direction: "left"})
       }
       if(keysDown[39] && isValidPosition(players[0].tileTo.x + 1, players[0].tileTo.y)) {
-        channel.push("move", {direction: "right"})
         allowedMoving = false;
+        channel.push("move", {direction: "right"})
       }
     }
     for (let i = 0; i < players.length; i++) {
@@ -414,7 +420,6 @@ export let Game = { run: function() {
   let channel = socket.channel("map:all")
 
   channel.on("player_position", payload => {
-    console.log("masuk")
     let movingPlayer;
     if(playerIndices[payload.id.toString()] == undefined) {
       movingPlayer = new Character(payload.x, payload.y);
@@ -429,7 +434,9 @@ export let Game = { run: function() {
     movingPlayer.tileTo.y = payload.y;
     movingPlayer.timeMoved = currentFrameTime;
     movingPlayer.moving();
-    allowedMoving = true;
+
+    if(payload.id == character.id)
+      allowedMoving = true;
   })
 
   channel.on("force_battle", payload =>{
@@ -437,7 +444,10 @@ export let Game = { run: function() {
   })
 
   channel.join()
-    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("ok", resp => {
+      console.log("Joined successfully", resp);
+      channel.push("move", {direction: "none"})
+    })
     .receive("error", resp => { console.log("Unable to join", resp) })
 
 }}

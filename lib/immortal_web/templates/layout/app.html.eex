@@ -27,6 +27,10 @@
       <%= if assigns[:character] do %>
         var character = <%= raw Poison.encode!(Map.take(@character, [:id, :attack, :health, :name, :position_x, :position_y])) %>;
       <% end %>
+
+      <%= if assigns[:characters] do %>
+        var characters = <%= raw Poison.encode!(Enum.map(@characters, fn(x) -> Map.take(x, [:id, :attack, :health, :name, :position_x, :position_y]) end)) %>;
+      <% end %>
       window.userToken = "<%= assigns[:user_token] %>";
     </script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
